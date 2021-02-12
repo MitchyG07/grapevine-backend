@@ -1,7 +1,20 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+require 'csv'
+
+csv_text = File.read('db/winemag-data-130k-v2.csv')
+
+csv = CSV.parse(csv_text, :headers => true)
+
+Wine.destroy_all
+
+csv.each do |r|
+    Wine.create(
+        title: r["title"],
+        description: r["description"],
+        variety: r["variety"],
+        designation: r["designation"],
+        country: r["country"],
+        province: r["province"],
+        winery: r["winery"],
+        points: r["points"]
+    )
+end 

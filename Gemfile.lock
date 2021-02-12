@@ -85,10 +85,12 @@ GEM
     method_source (1.0.0)
     mimemagic (0.3.5)
     mini_mime (1.0.2)
+    mini_portile2 (2.5.0)
     minitest (5.14.3)
     msgpack (1.4.2)
     nio4r (2.5.5)
-    nokogiri (1.11.1-x86_64-darwin)
+    nokogiri (1.11.1)
+      mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
     pg (1.2.3)
     puma (5.2.1)
@@ -144,7 +146,7 @@ GEM
     zeitwerk (2.4.2)
 
 PLATFORMS
-  x86_64-darwin-19
+  ruby
 
 DEPENDENCIES
   bootsnap (>= 1.4.4)
@@ -154,10 +156,9 @@ DEPENDENCIES
   puma (~> 5.0)
   rails (~> 6.1.1)
   spring
-  tzinfo-data
 
 RUBY VERSION
-   ruby 3.0.0p0
+   ruby 2.6.1p33
 
 BUNDLED WITH
-   2.2.3
+   2.1.4

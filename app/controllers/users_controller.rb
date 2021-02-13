@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-    has_secure_password
+    skip_before_action :authorized, only: [:create]
 
     def show 
         user = User.find(params[:id])
@@ -8,10 +8,12 @@ class UsersController < ApplicationController
 
     def create
         user = User.create(user_params)
-        #remember to add login validations! 
-        payload = {user_id: user.id}
-        token = encode_token(payload)
-        render json: {user: user, jwt: token}
+        if user.valid? 
+            my_token = encode_token({user_id: user.id})
+            render json: {id: user.id, username: user.username, token: my_token}
+        else 
+            render json: {error:'failed to create a user'}
+        end
     end
 
     private 

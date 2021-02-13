@@ -4,9 +4,9 @@ Rails.application.routes.draw do
   root 'welcome#home'
   #auth
   resource :users, only: [:create]
-  post "/login", to: "auth#login"
-   get "/auto_login", to: "auth#auto_login"
-   get "/user_is_authed", to: "auth#user_is_authed"
+  post '/sign_up', to: 'users#create'
+  post '/login', to: 'auth#create'
+  get '/persist', to: 'auth#show'
    
   resources :reviewed_wines
   resources :reviews

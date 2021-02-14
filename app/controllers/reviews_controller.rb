@@ -20,9 +20,11 @@ class ReviewsController < ApplicationController
         review.destroy
     end
 
+   
+
     private 
 
     def review_params 
-        params.require(:review).permit(:content)
+        params.require(:review).permit(:content, :user_id)
     end
 end

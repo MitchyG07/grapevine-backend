@@ -2,7 +2,12 @@ class WinesController < ApplicationController
 
     def index
         wines = Wine.all
-        render json: wines, only: [:title, :description, :variety, :designation, :country, :province, :winery, :points]
+        render json: wines 
+    end
+
+    def variety
+        wines = Wine.where(variety: params[:variety])
+        render json: wines 
     end
 
     def show 

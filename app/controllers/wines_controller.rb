@@ -23,6 +23,7 @@ class WinesController < ApplicationController
             new_hash = {"#{wine}" => map}
             varietal_array.push(new_hash)
         end 
+        render json: varietal_array
     end
 
 end

@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   post '/login', to: 'auth#create'
   get '/persist', to: 'auth#show'
   get '/wines/:variety', to: 'wines#variety'
+  get '/varietal_count', to: 'wines#varietal_count'
    
   resources :reviewed_wines
   resources :reviews

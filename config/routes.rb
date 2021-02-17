@@ -7,8 +7,9 @@ Rails.application.routes.draw do
   post '/sign_up', to: 'users#create'
   post '/login', to: 'auth#create'
   get '/persist', to: 'auth#show'
-  get '/wines/:variety', to: 'wines#variety'
+  get '/wines/:variety/:country', to: 'wines#variety'
   get '/varietal_count', to: 'wines#varietal_count'
+  get '/country_count', to: 'wines#country_count'
    
   resources :reviewed_wines
   resources :reviews

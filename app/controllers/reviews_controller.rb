@@ -20,6 +20,15 @@ class ReviewsController < ApplicationController
         review.destroy
     end
 
+    def show
+        review = Review.find(id: params:id)
+        render json: review, include: :wines
+    end
+
+    # def user_reviews
+    #     reviews = Review.where(user_id: params[:user_id])
+    #     render json: reviews, include: :wine
+    # end
    
 
     private 

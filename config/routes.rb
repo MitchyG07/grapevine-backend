@@ -10,9 +10,10 @@ Rails.application.routes.draw do
   get '/wines/:variety/:country', to: 'wines#variety'
   get '/varietal_count', to: 'wines#varietal_count'
   get '/country_count', to: 'wines#country_count'
+  # get '/reviews/:user_id', to: 'reviews#user_reviews'
    
-  resources :reviewed_wines
-  resources :reviews
+  
+  resources :reviews, except: :show
   resources :favorites
   resources :wines
   resources :users

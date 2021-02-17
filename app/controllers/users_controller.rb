@@ -3,7 +3,9 @@ class UsersController < ApplicationController
 
     def show 
         user = User.find(params[:id])
+       
         render json: user, include: [:reviews, :wines ]
+       
     end
 
     def create
@@ -18,13 +20,15 @@ class UsersController < ApplicationController
 
     def update
         user = User.find(params[:id])
+        user.update(bio: params[:bio])
+      
         render json: user, include: [:reviews, :wines]
     end
 
     private 
 
     def user_params
-        params.require(:user).permit(:username, :password)
+        params.require(:user).permit(:username, :password, :bio)
     end
 
 end

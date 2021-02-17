@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   get 'welcome/app', to: 'welcome#app', as: 'app'
   root 'welcome#home'
   #auth
-  resource :users, only: [:create]
+  # resource :users, only: [:create, :show]
   post '/sign_up', to: 'users#create'
   post '/login', to: 'auth#create'
   get '/persist', to: 'auth#show'

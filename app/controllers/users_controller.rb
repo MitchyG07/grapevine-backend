@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 
     def show 
         user = User.find(params[:id])
-        render json: user, only: [:username, :password, :bio]
+        render json: user, include: [:reviews, :wines ]
     end
 
     def create
@@ -14,6 +14,11 @@ class UsersController < ApplicationController
         else 
             render json: {error:'failed to create a user'}
         end
+    end
+
+    def update
+        user = User.find(params[:id])
+        render json: user, include: [:reviews, :wines]
     end
 
     private 

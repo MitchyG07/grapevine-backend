@@ -6,13 +6,42 @@ class WinesController < ApplicationController
     end
 
     def variety
-        wines = Wine.where(variety: params[:variety])
+        wines = Wine.where(variety: params[:variety], country: params[:country])
         render json: wines 
     end
 
     def show 
         wine = Wine.find(params[:id])
         render json: wine, only: [:title, :description, :variety, :designation, :country, :province, :winery, :points]
+    end
+
+
+    #organize by country for table render and regional variety
+    def country_count
+        wine_array = ["Malbec", "Merlot", "Syrah", 'Cabernet Sauvignon', 'Pinot Noir', 'Grenache', 'Sangiovese', 'Tempranillo', 'Montepulcia', 'Petite Syrah', 'Chardonnay', 'Sauvignon Blanc', 'Pinot Gris', 'Riesling', 'Semillon', 'Gewurztraminer', 'Chenin Blanc', 'Gruner Veltliner', 'Torrontes']
+        to_render = []
+        wine_array.map do |wine| 
+            countries = []
+            count= []
+            hash = {}
+            wines = Wine.where(variety: wine)
+
+            countries = wines.map do |wine|
+                wine.country
+            end
+
+            count = countries.each_with_object(Hash.new(0)) {|k, v| v[k] += 1}
+            new_array = [] 
+
+            count.keys.each do |country|
+                hash = {:country => country, :value => count[country]}
+                new_array.push(hash)
+            end
+
+            hash = {:varietal => wine, :countries => new_array} 
+            to_render.push(hash)
+        end
+        render json: to_render
     end
 
 
@@ -44,7 +73,6 @@ class WinesController < ApplicationController
 
             
             count_array = countries.each_with_object(Hash.new(0)) {|k, v| v[k] += 1}
-            keys = ['country','value']
             new_array = []
 
             count_array.keys.each do |iso| 

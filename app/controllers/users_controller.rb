@@ -3,13 +3,9 @@ class UsersController < ApplicationController
 
     def show 
         user = User.find(params[:id])
-<<<<<<< HEAD
        
-        render json: user, include: [:reviews, :wines ]
+        render json: user, include: [:reviews, :wines, :favorites]
        
-=======
-        render json: user, include: :wines
->>>>>>> harbor-humpies
     end
 
     def create

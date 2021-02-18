@@ -8,8 +8,8 @@ Rails.application.routes.draw do
   post '/login', to: 'auth#create'
   get '/persist', to: 'auth#show'
   get '/wines/:variety/:country', to: 'wines#variety'
-  get '/varietal_count', to: 'wines#varietal_count'
-  get '/country_count', to: 'wines#country_count'
+  get '/varietal_count/:variety', to: 'wines#varietal_count'
+  get '/country_count/:variety', to: 'wines#country_count'
   # get '/reviews/:user_id', to: 'reviews#user_reviews'
    
   

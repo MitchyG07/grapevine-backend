@@ -21,7 +21,7 @@ class ReviewsController < ApplicationController
     end
 
     def show
-        review = Review.find(id: params:id)
+        review = Review.find(id: params[:id])
         render json: review, include: :wines
     end
 
@@ -34,6 +34,6 @@ class ReviewsController < ApplicationController
     private 
 
     def review_params 
-        params.require(:review).permit(:content, :user_id)
+        params.require(:review).permit(:content, :user_id, :wine_id)
     end
 end

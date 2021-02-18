@@ -12,54 +12,54 @@ class WinesController < ApplicationController
 
     def show 
         wine = Wine.find(params[:id])
-        render json: wine, only: [:title, :description, :variety, :designation, :country, :province, :winery, :points]
+        render json: wine, include: [:reviews]
     end
 
 
     #organize by country for table render and regional variety
     def country_count
-        wine_array = ["Malbec", "Merlot", "Syrah", 'Cabernet Sauvignon', 'Pinot Noir', 'Grenache', 'Sangiovese', 'Tempranillo', 'Montepulcia', 'Petite Syrah', 'Chardonnay', 'Sauvignon Blanc', 'Pinot Gris', 'Riesling', 'Semillon', 'Gewurztraminer', 'Chenin Blanc', 'Gruner Veltliner', 'Torrontes']
-        to_render = []
-        wine_array.map do |wine| 
-            countries = []
-            count= []
-            hash = {}
-            wines = Wine.where(variety: wine)
+        varietal_array = []
+        # wine_array = ["Malbec", "Merlot", "Syrah", 'Cabernet Sauvignon', 'Pinot Noir', 'Grenache', 'Sangiovese', 'Tempranillo', 'Montepulcia', 'Petite Syrah', 'Chardonnay', 'Sauvignon blanc', 'Pinot Gris', 'Riesling', 'Semillon', 'Gewurztraminer', 'Chenin Blanc', 'Gruner Veltliner', 'Torrontes']
+        variety = Wine.where(variety: params[:variety])
+        # , "Pinot Noir",  "Merlot", "Malbec", "Syrah","Chardonnay","Sauvignon blanc","Pinot Gris","Riesling","Pinot Noir"]
+    
+        countries = []
+        count_array = []
+        new_hash = {}
 
-            countries = wines.map do |wine|
+            countries = variety.map do |wine| 
                 wine.country
+            end 
+
+            
+            count_array = countries.each_with_object(Hash.new(0)) {|k, v| v[k] += 1}
+            new_array = []
+
+            count_array.keys.each do |country| 
+                if country
+                    hash = {:country => country, :value => count_array[country]}
+                    new_array.push(hash)
+                end
             end
 
-            count = countries.each_with_object(Hash.new(0)) {|k, v| v[k] += 1}
-            new_array = [] 
-
-            count.keys.each do |country|
-                hash = {:country => country, :value => count[country]}
-                new_array.push(hash)
-            end
-
-            hash = {:varietal => wine, :countries => new_array} 
-            to_render.push(hash)
-        end
-        render json: to_render
+        new_hash = {:countries => new_array}
+        render json: new_hash
     end
 
 
     #backend function for heat map on home page
     def varietal_count
         varietal_array = []
-        wine_array = ["Malbec", "Merlot", "Syrah", 'Cabernet Sauvignon', 'Pinot Noir', 'Grenache', 'Sangiovese', 'Tempranillo', 'Montepulcia', 'Petite Syrah', 'Chardonnay', 'Sauvignon blanc', 'Pinot Gris', 'Riesling', 'Semillon', 'Gewurztraminer', 'Chenin Blanc', 'Gruner Veltliner', 'Torrontes']
+        # wine_array = ["Malbec", "Merlot", "Syrah", 'Cabernet Sauvignon', 'Pinot Noir', 'Grenache', 'Sangiovese', 'Tempranillo', 'Montepulcia', 'Petite Syrah', 'Chardonnay', 'Sauvignon blanc', 'Pinot Gris', 'Riesling', 'Semillon', 'Gewurztraminer', 'Chenin Blanc', 'Gruner Veltliner', 'Torrontes']
         country_iso_array = IsoCountryCodes.for_select.to_h
-        
+        variety = Wine.where(variety: params[:variety])
         # , "Pinot Noir",  "Merlot", "Malbec", "Syrah","Chardonnay","Sauvignon blanc","Pinot Gris","Riesling","Pinot Noir"]
     
-        wine_array.map do |wine|
-            countries = []
-            count_array = []
-            new_hash = {}
-            wines = Wine.where(variety: wine)
+        countries = []
+        count_array = []
+        new_hash = {}
 
-            countries = wines.map do |wine| 
+            countries = variety.map do |wine| 
                 if wine.country === "US"
                     country = "United States of America"
                     country_iso_array[country]
@@ -82,11 +82,8 @@ class WinesController < ApplicationController
                 end
             end
 
-            new_hash = {:varietal => "#{wine}", :isoCodes => new_array}
-            varietal_array.push(new_hash)
-        end 
-        render json: varietal_array
-    end
-
-end
+            new_hash = {:isoCodes => new_array}
+            render json: new_hash
+        end
+    end 
 
